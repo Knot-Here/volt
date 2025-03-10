@@ -94,10 +94,12 @@ rel_vol_df = pd.DataFrame(rel_vol_matrix, index=coins, columns=coins)
 plt.figure(figsize=(10, 7))
 sns.heatmap(rel_vol_df, annot=True, cmap="Reds")
 plt.title("Relative Volatility Heatmap (Annualized)")
+plt.savefig("output/relative-volatility-heatmap.png")
 plt.show()
 
 # Correlation Heatmap
 plt.figure(figsize=(10, 7))
 sns.heatmap(corr_matrix, annot=True, cmap="Blues", vmin=-1, vmax=1)
 plt.title("Correlation Heatmap of Crypto Assets (Daily Log Returns)")
+plt.savefig(("output/correlation-heatmap.png"))
 plt.show()

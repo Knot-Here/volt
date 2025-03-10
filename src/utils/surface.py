@@ -85,4 +85,5 @@ ax.legend()
 cset = ax.contourf(X, Y, Z, zdir="z", offset=0, cmap="viridis", alpha=0.5)
 
 plt.tight_layout()
+plt.savefig("output/relative-volatility-surface.png")
 plt.show()

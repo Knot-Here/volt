@@ -10,6 +10,8 @@ def main():
     asset1_name = "ethereum"  # Collateral asset
     asset2_name = "bitcoin"  # Borrowed asset
     deposit_amount = 10000
+    k = 1.5
+    T = 14
 
     # Load price data for both assets
     prices_dir = "./output/prices"
@@ -28,6 +30,8 @@ def main():
         collateral_prices=asset1_prices,
         borrowed_prices=asset2_prices,
         deposit=deposit_amount,
+        risk_tolerance=k,
+        time_horizon=T,
     )
 
     asset1_name = asset1_name.capitalize()

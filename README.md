@@ -62,16 +62,24 @@ Ethereum Volatility: 71.3%
 Bitcoin Volatility: 50.0%
 Ethereum-Bitcoin Correlation: 0.78
 Relative Volatility: 44.8%
-Safety Margin: 17.5%
-Optimal LTV: 65.0%
-For $10,000 Ethereum deposit, optimal Bitcoin borrow: $6495.76
+Safety Margin: 8.8%
+Optimal LTV: 73.7%
+For $10,000 Ethereum deposit, optimal Bitcoin borrow: $7372.88
 
 === Capital Efficiency Comparison ===
 Ethereum/USDC optimal borrow: $5458.66
-Ethereum/Bitcoin optimal borrow: $6495.76
-Improvement: 19.0%
+Ethereum/Bitcoin optimal borrow: $7372.88
+Improvement: 35.1%
 
 ```
+## Collecting Price Data
+
+## Generating Plots
+### Heatmaps
+
+### Relative Volatility 3D surface 
+
+
 ## Repository Structure
 ```bash
 volt/

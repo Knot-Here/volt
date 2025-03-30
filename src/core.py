@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 
-def calculate_volt_simple(
+def calculate_volt(
     collateral_prices: pd.Series,
     borrowed_prices: pd.Series,
     risk_tolerance: float = 2.0,
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     btc_prices = btc_df.set_index("timestamp")["price"]
 
     # Run VOLT calculation
-    result = calculate_volt_simple(
+    result = calculate_volt(
         collateral_prices=eth_prices, borrowed_prices=btc_prices, deposit=10000
     )
 

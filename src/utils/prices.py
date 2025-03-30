@@ -29,6 +29,9 @@ def get_historical_prices(
 
 
 def calculate_log_returns(price_series):
+    """
+    Calculate log returns from CoinGecko price data
+    """
     return np.log(price_series / price_series.shift(1)).dropna()
 
 
@@ -36,12 +39,7 @@ if __name__ == "__main__":
     coins = [
         "bitcoin",
         "ethereum",
-        "staked-ether",
-        "binancecoin",
-        "ripple",
-        "dogecoin",
     ]
 
-    # Fetch data and compute log returns
     for coin in coins:
         prices = get_historical_prices(coin, days=180, cache=True)

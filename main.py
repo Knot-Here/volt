@@ -2,14 +2,15 @@
 import pandas as pd
 import numpy as np
 import os
-from src.core import calculate_volt_simple
+from src.core import calculate_volt
 
 
 def main():
-    # Asset configuration
+    # Configuration
     asset1_name = "ethereum"  # Collateral asset
     asset2_name = "bitcoin"  # Borrowed asset
-    deposit_amount = 10000
+    deposit_amount = 10000  # In USD
+    liquidation_threshold = 0.825
     k = 1.5
     T = 14
 
@@ -26,7 +27,7 @@ def main():
     asset2_prices = asset2_df.set_index("timestamp")["price"]
 
     # Run VOLT calculation
-    result = calculate_volt_simple(
+    result = calculate_volt(
         collateral_prices=asset1_prices,
         borrowed_prices=asset2_prices,
         deposit=deposit_amount,
@@ -54,8 +55,8 @@ def main():
     v_rel_stablecoin = result[
         "volatility_a"
     ]  # Just use the already calculated volatility
-    safety_margin_stablecoin = 2.0 * (v_rel_stablecoin / np.sqrt(365)) * np.sqrt(14)
-    optimal_ltv_stablecoin = 0.825 - safety_margin_stablecoin
+    safety_margin_stablecoin = k * (v_rel_stablecoin / np.sqrt(365)) * np.sqrt(14)
+    optimal_ltv_stablecoin = liquidation_threshold - safety_margin_stablecoin
     optimal_borrow_stablecoin = deposit_amount * optimal_ltv_stablecoin
 
     print("\n=== Capital Efficiency Comparison ===")
@@ -70,4 +71,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

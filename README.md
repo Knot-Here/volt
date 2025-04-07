@@ -1,6 +1,7 @@
 # volt
 
-![volt-cover](https://github.com/user-attachments/assets/49a13372-d27b-45c3-bc52-89d812596ffe)
+
+![volt-cover](https://github.com/user-attachments/assets/7b63029e-02fb-4fe8-9c97-529951310257)
 
 ## Overview
 
@@ -40,6 +41,27 @@ source .venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
+## Repository Structure
+```bash
+volt/
+├── output/
+│   ├── prices/            # CSV files with historical price data
+│   ├── correlation-heatmap.png
+│   └── relative-volatility-heatmap.png
+├── src/
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── heatmaps.py    # Heatmap generation utilities
+│   │   ├── prices.py      # Price data handling
+│   │   └── surface.py     # 3D surface visualization
+│   ├── __init__.py
+│   └── core.py            # Core VOLT formula implementation
+├── LICENSE
+├── README.md
+├── main.py                # Main script to run the calculator
+└── requirements.txt
+```
+
 ## Usage
 To use the VOLT calculator with default settings (ETH as collateral, BTC as borrowed asset):
 
@@ -73,30 +95,81 @@ Improvement: 35.1%
 
 ```
 ## Collecting Price Data
+This script fetches historical price data for specified cryptocurrencies from the CoinGecko API and optionally caches it for further analysis.
+
+### What It Does
+- Retrieves historical market prices for a given list of coins over a specified number of days.
+- Converts raw JSON API responses into a structured Pandas DataFrame.
+- Saves each coin's data as a CSV file in the output/prices/ directory if cache=True.
+- Includes a helper function to compute log returns from price data.
+
+### Key Functions
+- get_historical_prices(coin_id, vs_currency, days, cache): Downloads price data for a coin. If cache=True, saves the result to a CSV file.
+- calculate_log_returns(price_series)" Calculates log returns from a price series for downstream analysis.
+
+#### Usage
+```bash
+python src/utils/prices.py
+```
+
+By default, the script downloads the last 180 days of price data for:
+
+- bitcoin
+- ethereum
 
 ## Generating Plots
 ### Heatmaps
+his script processes historical price data to compute log returns, volatility, correlation, and relative volatility between crypto assets. It visualizes the results using heatmaps, giving insights into how assets behave in relation to one another.
+
+#### What It Does
+1. Loads CSV price data from the output/prices directory.
+2. Computes daily log returns for each asset.
+3. Calculates:
+  - Annualized volatility (σ)
+  - Pairwise correlation between asset returns (ρ)
+  - Relative volatility using V_rel = √(σ_A² + σ_B² - 2ρσ_Aσ_B)
+4. Visualizes:
+- Relative Volatility Heatmap
+- Correlation Matrix Heatmap
+
+#### Output
+The following visualizations are saved in the output/ directory:
+- relative-volatility-heatmap.png
+- correlation-heatmap.png
+
+These plots help assess diversification potential and volatility overlap between different crypto assets.
+
+#### Usage
+```bash
+python src/utils/heatmaps.py
+```
+
+![rel-vol](https://github.com/user-attachments/assets/e15bee92-96b1-4c6f-96ec-9ff1e4ae80fd)
+![correlation](https://github.com/user-attachments/assets/345f5272-93d4-4e87-903f-1b1c1ea156f9)
+
+
 
 ### Relative Volatility 3D surface 
 
 
-## Repository Structure
+This module visualizes the relative volatility between two assets in a 3D surface plot, helping users understand how correlation and individual asset volatility affect overall volatility exposure.
+
+#### What It Does
+- Fixes the volatility of Asset B (σ_B) and varies:
+  - The volatility of Asset A (σ_A)
+  - The correlation (ρ) between the two assets
+- Computes relative volatility V_rel = √(σ_A² + σ_B² - 2ρσ_Aσ_B)
+- Renders a 3D surface plot with color gradients to highlight regions of high and low relative volatility
+
+#### Output
+- Saves a high-resolution plot to output/relative-volatility-surface.png
+- Highlights the maximum and minimum V_rel values on the surface
+- Includes contour projections for better visual interpretation
+
+#### Usage
 ```bash
-volt/
-├── output/
-│   ├── prices/            # CSV files with historical price data
-│   ├── correlation-heatmap.png
-│   └── relative-volatility-heatmap.png
-├── src/
-│   ├── utils/
-│   │   ├── __init__.py
-│   │   ├── heatmaps.py    # Heatmap generation utilities
-│   │   ├── prices.py      # Price data handling
-│   │   └── surface.py     # 3D surface visualization
-│   ├── __init__.py
-│   └── core.py            # Core VOLT formula implementation
-├── LICENSE
-├── README.md
-├── main.py                # Main script to run the calculator
-└── requirements.txt
+python src/utils/surface.py
 ```
+
+![surface](https://github.com/user-attachments/assets/4db76550-7c2f-485a-b4f7-6c17d6d82fe5)
+
